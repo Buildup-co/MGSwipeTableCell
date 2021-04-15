@@ -878,7 +878,11 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     
     // snapshot cell without separator
     CGSize  cropSize        = CGSizeMake(self.bounds.size.width, self.contentView.bounds.size.height);
-    _swipeView.image = [self imageFromView:self cropSize:cropSize];
+    
+    // On iOS 14, this causes a hang and diagnostics:
+    //   drawing with afterScreenUpdates:YES inside CoreAnimation commit is not supported
+    // https://github.com/MortimerGoro/MGSwipeTableCell/issues/358
+    // _swipeView.image = [self imageFromView:self cropSize:cropSize];
     
     _swipeOverlay.hidden = NO;
     if (_swipeContentView)
